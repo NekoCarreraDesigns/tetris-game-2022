@@ -1,3 +1,4 @@
+from turtle import position
 import pygame
 import random
 
@@ -75,3 +76,11 @@ def valid_space(shape, grid):
                 return False
 
     return True
+
+
+def check_lost(positions):
+    for pos in positions:
+        x, y = pos
+        if y < 1:
+            return True
+    return False
