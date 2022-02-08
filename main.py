@@ -84,3 +84,9 @@ def check_lost(positions):
         if y < 1:
             return True
     return False
+
+
+def get_shape():
+    global shapes, shape_colors
+
+    return Piece(5, 0, random.choice(shapes))
