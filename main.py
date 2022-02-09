@@ -1,4 +1,3 @@
-from turtle import position
 import pygame
 import random
 
@@ -90,3 +89,11 @@ def get_shape():
     global shapes, shape_colors
 
     return Piece(5, 0, random.choice(shapes))
+
+
+def draw_text_middle(text, size, color, surface):
+    font = pygame.font.SysFont('Times', size, bold=True)
+    label = font.render(text, 1, color)
+
+    surface.blit(label, (top_left_x + play_width/2 - (label.get_width() / 2),
+                 top_left_y + play_height / 2 - label.get_height()/2))
