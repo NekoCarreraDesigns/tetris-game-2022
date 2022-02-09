@@ -97,3 +97,14 @@ def draw_text_middle(text, size, color, surface):
 
     surface.blit(label, (top_left_x + play_width/2 - (label.get_width() / 2),
                  top_left_y + play_height / 2 - label.get_height()/2))
+
+
+def draw_grid(surface, row, col):
+    sx = top_left_x
+    sy = top_left_y
+    for i in range(row):
+        pygame.draw.line(surface, (128, 128, 128),
+                         (sx, sy+i*30), (sx + play_width, sy + i * 30))
+        for j in range(col):
+            pygame.draw.line(surface, (128, 128, 128),
+                             (sx + j * 30, sy), (sx + j * 30, sy + play_height))
