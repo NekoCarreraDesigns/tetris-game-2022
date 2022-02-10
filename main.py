@@ -7,7 +7,7 @@ s_width = 800
 s_height = 700
 play_width = 300
 play_height = 600
-block = 30
+block_size = 30
 
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
@@ -190,13 +190,14 @@ def draw_text_middle(text, size, color, surface):
     pass
 
 
-def draw_grid(surface, row, col):
-    surface.fill((0, 0, 0))
-    pygame.font.init()
-    font = pygame.font.SysFont('comicsans', 60)
-    label = font.render('Tetris', 1, (255, 255, 255))
-    surface.blit(label, (top_left_x + play_width/2 - (label.get_width() / 2),
-                 top_left_y + play_height / 2 - label.get_height()/2))
+def draw_grid(surface, grid, row, col):
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(
+                surface, grid[i][j], (top_left_x + j*block_size, top_left_y + i*block_size, block_size, block_size), 0)
+
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x,
+                     top_left_y, play_width, play_height), 4)
 
 
 def clear_rows(grid, locked):
@@ -237,20 +238,18 @@ def draw_next_shape(shape, surface):
         surface.blit(label, (sx + 10, sy - 30))
 
 
-def draw_window(surface):
+def draw_window(surface, grid):
     surface.fill((0, 0, 0))
-    font = pygame.font.SysFont('Times', 60)
+
+    pygame.font.init()
+    font = pygame.font.SysFont('comicsans', 60)
     label = font.render('Tetris', 1, (255, 255, 255))
 
-    surface.blit(label, top_left_x + play_width / 2 - (label.get.width() / 2))
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            pygame.draw.rect(
-                surface, grid[i][j], (top_left_x + j*30, top_left_y + i * 30, 30, 30), 0)
+    surface.blit(label, (top_left_x + play_width / 2 -
+                 (label.get_width() / 2), block_size))
 
-    draw_grid(surface, 20, 10)
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x,
-                     top_left_y, play_width, play_height), 5)
+    draw_grid(surface, grid)
+    pygame.display.update()
 
 
 def main():
