@@ -126,7 +126,7 @@ class Piece(object):
         self.x = column
         self.y = row
         self.shape = shape
-        self.color = shape_colors[shape.index(shape)]
+        self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0
         self.score = 0
 
@@ -150,7 +150,7 @@ def convert_shape_format(shape):
         row = list(line)
         for j, column in enumerate(row):
             if column == '0':
-                positions.append(shape.x + j, shape.y + i)
+                positions.append((shape.x + j, shape.y + i))
 
     for i, pos in enumerate(positions):
         positions[i] = (pos[0] - 2, pos[1] - 4)
@@ -177,6 +177,7 @@ def check_lost(positions):
         x, y = pos
         if y < 1:
             return True
+
     return False
 
 
@@ -190,14 +191,14 @@ def draw_text_middle(text, size, color, surface):
     pass
 
 
-def draw_grid(surface, grid, row, col):
+def draw_grid(surface, grid):
     sx = top_left_x
     sy = top_left_y
 
     for i in range(len(grid)):
         pygame.draw.line(surface, (120, 120, 120), (sx, sy +
                          i * block_size), (sx + play_width, sy + i * block_size))
-        for j in range(len(grid[j])):
+        for j in range(len(grid[i])):
             pygame.draw.line(surface, (120, 120, 120), (sx + j *
                              block_size, sy), (sx + j * block_size, sy + play_height))
 
@@ -274,10 +275,9 @@ def main(win):
     next_piece = get_shape()
     clock = pygame.time.Clock()
     fall_time = 0
+    fall_speed = 0.27
 
     while run:
-        fall_speed = 0.27
-
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
         clock.tick()
@@ -303,7 +303,7 @@ def main(win):
 
                 elif event.key == pygame.K_RIGHT:
                     current_piece.x += 1
-                    if not (valid_space(current_piece), grid):
+                    if not (valid_space(current_piece, grid)):
                         current_piece.x -= 1
 
                 elif event.key == pygame.K_DOWN:
@@ -318,7 +318,7 @@ def main(win):
                     if not (valid_space(current_piece, grid)):
                         current_piece.rotation = current_piece.rotation - \
                             1 % len(current_piece.shape)
-                        current_piece -= 1
+                        current_piece.rotation -= 1
 
         shape_pos = convert_shape_format(current_piece)
 
