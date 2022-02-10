@@ -128,7 +128,6 @@ class Piece(object):
         self.shape = shape
         self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0
-        self.score = 0
 
 
 def create_grid(locked_positions={}):
@@ -204,10 +203,12 @@ def draw_grid(surface, grid):
 
 
 def clear_rows(grid, locked):
+    score = 0
     inc = 0
     for i in range(len(grid)-1, -1, -1):
         row = grid[i]
         if (0, 0, 0) not in row:
+            score += 1
             inc += 1
             ind = i
             for j in range(len(row)):
