@@ -146,3 +146,19 @@ def draw_next_shape(shape, surface):
                                  (sx + j*30, sy + i*30, 30, 30), 0)
 
         surface.blit(label, (sx + 10, sy - 30))
+
+
+def draw_window(surface):
+    surface.fill((0, 0, 0))
+    font = pygame.font.SysFont('Times', 60)
+    label = font.render('Tetris', 1, (255, 255, 255))
+
+    surface.blit(label, top_left_x + play_width / 2 - (label.get.width() / 2))
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(
+                surface, grid[i][j], (top_left_x + j*30, top_left_y + i * 30, 30, 30), 0)
+
+    draw_grid(surface, 20, 10)
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x,
+                     top_left_y, play_width, play_height), 5)
