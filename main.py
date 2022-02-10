@@ -222,7 +222,7 @@ def main():
         shape_pos = convert_shape_format(current_piece)
 
         for i in range(len(shape_pos)):
-            x, y = shape.pos[i]
+            x, y = shape_pos[i]
             if y > -1:
                 grid[y][x] = current_piece.color
 
@@ -246,3 +246,25 @@ def main():
     draw_text_middle("You lost", 40, (255, 255, 255), win)
     pygame.display.update()
     pygame.time.delay(2000)
+
+
+def main_menu():
+    run = True
+    while run:
+        win.fill((0, 0, 0))
+        draw_text_middle('Press any key to begin', 60, (255, 255, 255), win)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            if event.type == pygame.KEYDOWN:
+                main()
+
+        pygame.quit()
+
+
+win = pygame.display.set_mode((s_width, s_height))
+pygame.display.set_caption('Tetris')
+
+main_menu()
