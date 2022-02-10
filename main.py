@@ -149,7 +149,7 @@ def convert_shape_format(shape):
     for i, line in enumerate(format):
         row = list(line)
         for j, column in enumerate(row):
-            if column == 0:
+            if column == '0':
                 positions.append(shape.x + j, shape.y + i)
 
     for i, pos in enumerate(positions):
@@ -191,13 +191,15 @@ def draw_text_middle(text, size, color, surface):
 
 
 def draw_grid(surface, grid, row, col):
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            pygame.draw.rect(
-                surface, grid[i][j], (top_left_x + j*block_size, top_left_y + i*block_size, block_size, block_size), 0)
+    sx = top_left_x
+    sy = top_left_y
 
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x,
-                     top_left_y, play_width, play_height), 4)
+    for i in range(len(grid)):
+        pygame.draw.line(surface, (120, 120, 120), (sx, sy +
+                         i * block_size), (sx + play_width, sy + i * block_size))
+        for j in range(len(grid[j])):
+            pygame.draw.line(surface, (120, 120, 120), (sx + j *
+                             block_size, sy), (sx + j * block_size, sy + play_height))
 
 
 def clear_rows(grid, locked):
@@ -248,11 +250,19 @@ def draw_window(surface, grid):
     surface.blit(label, (top_left_x + play_width / 2 -
                  (label.get_width() / 2), block_size))
 
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(
+                surface, grid[i][j], (top_left_x + j*block_size, top_left_y + i*block_size, block_size, block_size), 0)
+
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x,
+                     top_left_y, play_width, play_height), 5)
+
     draw_grid(surface, grid)
     pygame.display.update()
 
 
-def main():
+def main(win):
     global grid
 
     locked_positions = {}
@@ -288,24 +298,27 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     current_piece.x -= 1
-                    if not valid_space(current_piece, grid):
+                    if not (valid_space(current_piece, grid)):
                         current_piece.x += 1
 
                 elif event.key == pygame.K_RIGHT:
                     current_piece.x += 1
-                    if not valid_space(current_piece, grid):
+                    if not (valid_space(current_piece), grid):
                         current_piece.x -= 1
-                elif event.key == pygame.K_UP:
-                    current_piece.rotation = current_piece.rotation + \
-                        1 % len(current_piece.shape)
-                    if not valid_space(current_piece, grid):
-                        current_piece.rotation = current_piece.rotation - \
-                            1 % len(current_piece.shape)
 
                 elif event.key == pygame.K_DOWN:
                     current_piece.y += 1
-                    if not valid_space(current_piece, grid):
+                    if not (valid_space(current_piece, grid)):
                         current_piece.y -= 1
+
+                elif event.key == pygame.K_UP:
+                    current_piece.rotation += 1
+                    current_piece.rotation = current_piece.rotation + \
+                        1 % len(current_piece.shape)
+                    if not (valid_space(current_piece, grid)):
+                        current_piece.rotation = current_piece.rotation - \
+                            1 % len(current_piece.shape)
+                        current_piece -= 1
 
         shape_pos = convert_shape_format(current_piece)
 
@@ -324,7 +337,7 @@ def main():
 
             clear_rows(grid, locked_positions)
 
-        draw_window(win)
+        draw_window(win, grid)
         draw_next_shape(next_piece, win)
         pygame.display.update()
 
@@ -336,8 +349,9 @@ def main():
     pygame.time.delay(2000)
 
 
-def main_menu():
+def main_menu(win):
     run = True
+    main(win)
     while run:
         # win.fill((0, 0, 0))
         draw_text_middle('Press any key to begin', 60, (255, 255, 255), win)
@@ -355,4 +369,4 @@ def main_menu():
 win = pygame.display.set_mode((s_width, s_height))
 pygame.display.set_caption('Tetris')
 
-main_menu()
+main_menu(win)
