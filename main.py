@@ -203,12 +203,10 @@ def draw_grid(surface, grid):
 
 
 def clear_rows(grid, locked):
-    score = 0
     inc = 0
     for i in range(len(grid)-1, -1, -1):
         row = grid[i]
         if (0, 0, 0) not in row:
-            score += 1
             inc += 1
             ind = i
             for j in range(len(row)):
@@ -314,11 +312,7 @@ def main(win):
 
                 elif event.key == pygame.K_UP:
                     current_piece.rotation += 1
-                    current_piece.rotation = current_piece.rotation + \
-                        1 % len(current_piece.shape)
                     if not (valid_space(current_piece, grid)):
-                        current_piece.rotation = current_piece.rotation - \
-                            1 % len(current_piece.shape)
                         current_piece.rotation -= 1
 
         shape_pos = convert_shape_format(current_piece)
