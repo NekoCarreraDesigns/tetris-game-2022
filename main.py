@@ -413,6 +413,6 @@ def main_menu(win):
 win = pygame.display.set_mode((s_width, s_height))
 pygame.display.set_caption('Tetris')
 captionImg = pygame.image.load("Tetris_piece.png")
-pygame.display.Set_icon(captionImg)
+pygame.display.set_icon(captionImg)
 
 main_menu(win)
